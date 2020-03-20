@@ -6,10 +6,10 @@ type SelectBuilder struct {
 	ConditionBuilder
 }
 func (b *SelectBuilder) GetTableNameSql(tableName string) string {
-	return GetTableFormat(tableName)
+	return GetTableNameWithFormat(tableName)
 }
 func (b *SelectBuilder) GetColumnNameSql(columnName string) string {
-	return GetColumnFormat(columnName)
+	return GetColumnNameWithFormat(columnName)
 }
 func (b *SelectBuilder) GetSelectCommandSql() string {
 	return "SELECT"

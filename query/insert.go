@@ -1,12 +1,23 @@
 package query
 
-import "t-storage/builder"
+import (
+	"database/sql"
+	"t-storage/builder"
+	"t-storage/core/parameter"
+)
 
 type Insert struct {
 	TableName string
+	ColumnValues *ColumnValueList
 	Builder builder.InsertBuilder
 }
 
 func (i *Insert) GetSqlText() string {
-	return "todo"
+	var columnValues = i.ColumnValues
+	return i.Builder.GetInsertSql(i.TableName, (*map[string]parameter.QueryParameter)(columnValues))
+}
+
+func (i *Insert) Execute(db *sql.DB) (sql.Result, error) {
+	var sqlText = i.GetSqlText()
+	return db.Exec(sqlText)
 }

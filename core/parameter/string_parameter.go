@@ -7,3 +7,7 @@ type StringParameter struct {
 func (p *StringParameter)GetValueSql() string {
 	return p.Value
 }
+
+func CreateStringParameter(value string) *StringParameter {
+	return &StringParameter{Value:value}
+}

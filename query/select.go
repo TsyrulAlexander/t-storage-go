@@ -12,7 +12,7 @@ type Select struct {
 	Columns *ColumnList
 	Joins *JoinList
 	Conditions *ConditionList
-	builder.SelectBuilder
+	Builder builder.SelectBuilder
 }
 
 func (s *Select) Execute(db *sql.DB) (*[]Row, error) {
@@ -57,17 +57,18 @@ func getScanRow(columns *ColumnList) ([]interface{}, *Row) {
 	var row = make(Row, len(*columns))
 	for i, v := range *columns {
 		var columnAlias = v.GetAlias()
-		scanArray[i] = row[columnAlias]
+		var r = row[columnAlias]
+		scanArray[i] = &r
 	}
 	return scanArray, &row
 }
 
 func (s *Select) getColumnsSql() string {
 	var sqlText = emptyString
-	var columnSeparator = s.GetColumnSeparatorSql()
+	var columnSeparator = s.Builder.GetColumnSeparatorSql()
 	var columnCount = len(*s.Columns)
 	for i, c := range *s.Columns {
-		sqlText += fmt.Sprintf(s.GetQueryColumnAliasFormat(c.GetAlias()), s.GetQueryColumnSql(&c))
+		sqlText += fmt.Sprintf(s.Builder.GetQueryColumnAliasFormat(c.GetAlias()), s.Builder.GetQueryColumnSql(&c))
 		if i != (columnCount - 1) {
 			sqlText += columnSeparator
 		}
@@ -76,17 +77,17 @@ func (s *Select) getColumnsSql() string {
 }
 
 func (s *Select) getSelectSql() string {
-	return s.GetSelectCommandSql() + " " + s.getColumnsSql() + newLine
+	return s.Builder.GetSelectCommandSql() + " " + s.getColumnsSql() + newLine
 }
 
 func (s *Select) getFromSql() string {
-	return s.GetFromCommandSql() + " " + s.GetTableNameSql(s.TableName) + newLine
+	return s.Builder.GetFromCommandSql() + " " + s.Builder.GetTableNameSql(s.TableName) + newLine
 }
 
 func (s *Select) getJoinsSql() string {
 	var sqlText = emptyString
 	for _, j := range *s.Joins {
-		sqlText += s.GetJoinSql(&j) + newLine
+		sqlText += s.Builder.GetJoinSql(&j) + newLine
 	}
 	return sqlText
 }
@@ -95,16 +96,16 @@ func (s *Select) getWhereSql() string {
 	if len(*s.Conditions) == 0 {
 		return emptyString
 	}
-	return s.GetWhereCommandSql() + " " + s.getConditionsSql() + newLine
+	return s.Builder.GetWhereCommandSql() + " " + s.getConditionsSql() + newLine
 }
 
 func (s *Select) getConditionsSql() string {
 	var sqlText = emptyString
 	var conditionCount = len(*s.Conditions)
 	for i, c := range *s.Conditions {
-		sqlText += s.GetQueryConditionSql(&c)
+		sqlText += s.Builder.GetQueryConditionSql(&c)
 		if i != (conditionCount - 1) {
-			sqlText += s.GetLogicalOperationSql(condition.And)
+			sqlText += s.Builder.GetLogicalOperationSql(condition.And)
 		}
 	}
 	return sqlText

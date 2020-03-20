@@ -26,6 +26,6 @@ func (b *ColumnBuilder) GetColumnSeparatorSql() string {
 }
 
 func getTableColumnSql(c *column.TableColumn) string {
-	return GetTableFormat(c.TableName) + "." + GetColumnFormat(c.ColumnName)
+	return GetTableNameWithFormat(c.TableName) + "." + GetColumnNameWithFormat(c.ColumnName)
 }
 

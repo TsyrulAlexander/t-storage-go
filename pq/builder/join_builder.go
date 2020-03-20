@@ -10,7 +10,7 @@ type JoinBuilder struct {
 }
 
 func (b *JoinBuilder) GetJoinSql(j *join.TableJoin) string  {
-	return getJoinTypeSql(j.Type) + " JOIN  \"" + j.JoinTableName + "\" ON " + b.GetQueryConditionSql(&j.Conditions) + "\n"
+	return getJoinTypeSql(j.Type) + " JOIN  \"" + j.JoinTableName + "\" ON " + b.GetQueryConditionSql(&j.Conditions)
 }
 
 func getJoinTypeSql(t join.Type) string {

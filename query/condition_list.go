@@ -14,7 +14,7 @@ func (cl *ConditionList) CreateColumnValueCondition(comparisonType condition.Com
 	return &condition.BinaryQueryCondition{
 		ComparisonType: comparisonType,
 		LeftCondition: &condition.ColumnQueryCondition{
-			QueryColumn: &c,
+			QueryColumn: c,
 		},
 		RightCondition: &condition.ParameterQueryCondition{
 			Value: &v,

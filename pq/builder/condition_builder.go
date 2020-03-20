@@ -3,10 +3,10 @@ package builder
 import (
 	"t-storage/builder"
 	"t-storage/core/condition"
-	"t-storage/core/parameter"
 )
 
 type ConditionBuilder struct {
+	builder.ParameterBuilder
 	builder.ColumnBuilder
 }
 
@@ -36,16 +36,11 @@ func (b *ConditionBuilder) GetLogicalOperationSql(lo condition.LogicalOperation)
 }
 
 func (b *ConditionBuilder) getParameterQueryConditionSql(c *condition.ParameterQueryCondition) string {
-	switch t:= (*c.Value).(type) {
-	case *parameter.StringParameter:
-		return "'" + t.GetValueSql() + "'"
-	default:
-		panic("not implemented")
-	}
+	return b.GetParameterSql(c.Value)
 }
 
 func (b *ConditionBuilder) getColumnQueryConditionSql(c *condition.ColumnQueryCondition) string {
-	return b.ColumnBuilder.GetQueryColumnSql(c.QueryColumn)
+	return b.ColumnBuilder.GetQueryColumnSql(&c.QueryColumn)
 }
 
 func (b *ConditionBuilder) getGroupQueryConditionSql(c *condition.GroupQueryCondition) string {
