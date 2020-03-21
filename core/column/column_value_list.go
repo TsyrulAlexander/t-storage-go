@@ -1,4 +1,4 @@
-package query
+package column
 
 import "t-storage/core/parameter"
 

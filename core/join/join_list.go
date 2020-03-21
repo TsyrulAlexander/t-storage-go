@@ -1,17 +1,16 @@
-package query
+package join
 
 import (
 	"t-storage/core/column"
 	"t-storage/core/condition"
-	"t-storage/core/join"
 )
 
-type JoinList []join.TableJoin
+type JoinList []TableJoin
 
-func (j *JoinList) CreateLeftJoin(joinTableName string, joinTableColumnName string, mainTableName string, mainTableColumnName string) *join.TableJoin {
-	return &join.TableJoin{
+func (j *JoinList) CreateLeftJoin(joinTableName string, joinTableColumnName string, mainTableName string, mainTableColumnName string) *TableJoin {
+	return &TableJoin{
 		JoinTableName: joinTableName,
-		Type:          join.LeftJoin,
+		Type:          LeftJoin,
 		Conditions:    &condition.BinaryQueryCondition{
 			ComparisonType: condition.ComparisonTypeEqual,
 			LeftCondition:  &condition.ColumnQueryCondition{

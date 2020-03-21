@@ -6,11 +6,6 @@ import (
 	"t-storage/core/join"
 )
 
-const (
-	newLine = "\n"
-	emptyString = ""
-)
-
 func (s *Select)AddTableColumn(tableName string, columnName string) *column.TableColumn {
 	var c = s.Columns.CreateTableColumn(tableName, columnName)
 	var cl = append(*s.Columns, c)

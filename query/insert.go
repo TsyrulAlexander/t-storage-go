@@ -3,12 +3,13 @@ package query
 import (
 	"database/sql"
 	"t-storage/builder"
+	"t-storage/core/column"
 	"t-storage/core/parameter"
 )
 
 type Insert struct {
 	TableName string
-	ColumnValues *ColumnValueList
+	ColumnValues *column.ColumnValueList
 	Builder builder.InsertBuilder
 }
 

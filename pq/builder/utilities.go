@@ -1,8 +1,13 @@
 package builder
 
 import (
+	"t-storage/core/column"
+	"t-storage/core/condition"
+	"t-storage/core/join"
 	"t-storage/query"
 )
+
+const defaultSelectRowCount = 10
 
 func CreateSelect(tableName string) *query.Select {
 	var columnBuilder = ColumnBuilder{}
@@ -11,15 +16,16 @@ func CreateSelect(tableName string) *query.Select {
 	var joinBuilder = JoinBuilder{ConditionBuilder: &conditionBuilder}
 	var selectBuilder = &SelectBuilder{ColumnBuilder:columnBuilder, ConditionBuilder: conditionBuilder, JoinBuilder: joinBuilder}
 	return &query.Select{
-		TableName: tableName,
-		SelectBuilder: selectBuilder,
-		Columns: &query.ColumnList{},
-		Joins: &query.JoinList{},
-		Conditions: &query.ConditionList{},
+		TableName:  tableName,
+		Builder:    selectBuilder,
+		Columns:    &column.ColumnList{},
+		Joins:      &join.JoinList{},
+		Conditions: &condition.ConditionList{},
+		RowCount:   defaultSelectRowCount,
 	}
 }
 
-func CreateInsert(tableName string, columnValues *query.ColumnValueList) *query.Insert {
+func CreateInsert(tableName string, columnValues *column.ColumnValueList) *query.Insert {
 	var parameterBuilder = &ParameterBuilder{}
 	var insertBuilder = &InsertBuilder{ParameterBuilder: parameterBuilder}
 	return &query.Insert{

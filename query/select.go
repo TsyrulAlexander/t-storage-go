@@ -2,17 +2,19 @@ package query
 
 import (
 	"database/sql"
-	"fmt"
-	"t-storage/builder"
+	"strings"
+	"t-storage/core/column"
 	"t-storage/core/condition"
+	"t-storage/core/join"
 )
 
 type Select struct {
-	TableName string
-	Columns *ColumnList
-	Joins *JoinList
-	Conditions *ConditionList
-	Builder builder.SelectBuilder
+	TableName  string
+	Columns    *column.ColumnList
+	Joins      *join.JoinList
+	Conditions *condition.ConditionList
+	RowCount   int
+	Builder    SelectBuilder
 }
 
 func (s *Select) Execute(db *sql.DB) (*[]Row, error) {
@@ -29,10 +31,17 @@ func (s *Select) Execute(db *sql.DB) (*[]Row, error) {
 }
 
 func (s *Select) GetSqlText() string {
-	return s.getSelectSql() + s.getFromSql() + s.getJoinsSql() + s.getWhereSql()
+	var sb = &strings.Builder{}
+	s.Builder.AlterBuildSql(s, sb)
+	s.Builder.SetSelectSql(s, sb)
+	s.Builder.SetFromSql(s, sb)
+	s.Builder.SetJoinSql(s, sb)
+	s.Builder.SetWhereSql(s, sb)
+	s.Builder.BeforeBuildSql(s, sb)
+	return sb.String()
 }
 
-func getRows(rs *sql.Rows, columns *ColumnList) (*[]Row, error) {
+func getRows(rs *sql.Rows, columns *column.ColumnList) (*[]Row, error) {
 	var rows []Row
 	for rs.Next() {
 		var row, err = getRow(rs, columns)
@@ -44,69 +53,28 @@ func getRows(rs *sql.Rows, columns *ColumnList) (*[]Row, error) {
 	return &rows, nil
 }
 
-func getRow(rs *sql.Rows, columns *ColumnList) (*Row, error) {
-	var scanArray, row = getScanRow(columns)
+func getRow(rs *sql.Rows, columns *column.ColumnList) (*Row, error) {
+	var scanArray, valueArray = getScanRow(len(*columns))
 	if err := rs.Scan(scanArray...); err != nil {
 		return nil, err
 	}
-	return row, nil
+	return getRowValue(columns, valueArray), nil
 }
 
-func getScanRow(columns *ColumnList) ([]interface{}, *Row) {
-	var scanArray = make([]interface{}, len(*columns))
-	var row = make(Row, len(*columns))
-	for i, v := range *columns {
-		var columnAlias = v.GetAlias()
-		var r = row[columnAlias]
-		scanArray[i] = &r
+func getScanRow(count int) (scan []interface{}, value []interface{}) {
+	var scanArray = make([]interface{}, count)
+	var valueArray = make([]interface{}, count)
+	for i := 0; i < count; i++ {
+		scanArray[i] = &valueArray[i]
 	}
-	return scanArray, &row
+	return scanArray, valueArray
 }
 
-func (s *Select) getColumnsSql() string {
-	var sqlText = emptyString
-	var columnSeparator = s.Builder.GetColumnSeparatorSql()
-	var columnCount = len(*s.Columns)
-	for i, c := range *s.Columns {
-		sqlText += fmt.Sprintf(s.Builder.GetQueryColumnAliasFormat(c.GetAlias()), s.Builder.GetQueryColumnSql(&c))
-		if i != (columnCount - 1) {
-			sqlText += columnSeparator
-		}
+func getRowValue(columns *column.ColumnList, valueArray []interface{}) *Row {
+	var r = Row{}
+	for i, c := range *columns {
+		var columnAlias = c.GetAlias()
+		r[columnAlias] = valueArray[i]
 	}
-	return sqlText
-}
-
-func (s *Select) getSelectSql() string {
-	return s.Builder.GetSelectCommandSql() + " " + s.getColumnsSql() + newLine
-}
-
-func (s *Select) getFromSql() string {
-	return s.Builder.GetFromCommandSql() + " " + s.Builder.GetTableNameSql(s.TableName) + newLine
-}
-
-func (s *Select) getJoinsSql() string {
-	var sqlText = emptyString
-	for _, j := range *s.Joins {
-		sqlText += s.Builder.GetJoinSql(&j) + newLine
-	}
-	return sqlText
-}
-
-func (s *Select) getWhereSql() string {
-	if len(*s.Conditions) == 0 {
-		return emptyString
-	}
-	return s.Builder.GetWhereCommandSql() + " " + s.getConditionsSql() + newLine
-}
-
-func (s *Select) getConditionsSql() string {
-	var sqlText = emptyString
-	var conditionCount = len(*s.Conditions)
-	for i, c := range *s.Conditions {
-		sqlText += s.Builder.GetQueryConditionSql(&c)
-		if i != (conditionCount - 1) {
-			sqlText += s.Builder.GetLogicalOperationSql(condition.And)
-		}
-	}
-	return sqlText
+	return &r
 }
