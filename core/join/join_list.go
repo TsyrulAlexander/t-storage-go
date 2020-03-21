@@ -1,8 +1,8 @@
 package join
 
 import (
-	"t-storage/core/column"
-	"t-storage/core/condition"
+	"github.com/tsyrul-alexander/go-query-builder/core/column"
+	"github.com/tsyrul-alexander/go-query-builder/core/condition"
 )
 
 type JoinList []TableJoin

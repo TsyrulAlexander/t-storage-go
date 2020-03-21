@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"t-storage/core/condition"
-	"t-storage/query"
+	"github.com/tsyrul-alexander/go-query-builder/core/condition"
+	"github.com/tsyrul-alexander/go-query-builder/query"
 )
 const (
 	newLine = "\n"

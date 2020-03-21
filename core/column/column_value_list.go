@@ -1,5 +1,5 @@
 package column
 
-import "t-storage/core/parameter"
+import "github.com/tsyrul-alexander/go-query-builder/core/parameter"
 
 type ColumnValueList map[string]parameter.QueryParameter

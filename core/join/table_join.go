@@ -1,6 +1,6 @@
 package join
 
-import "t-storage/core/condition"
+import "github.com/tsyrul-alexander/go-query-builder/core/condition"
 
 type TableJoin struct {
 	JoinTableName string

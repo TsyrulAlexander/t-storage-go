@@ -2,7 +2,7 @@ package query
 
 import (
 	"strings"
-	"t-storage/builder"
+	"github.com/tsyrul-alexander/go-query-builder/builder"
 )
 
 type SelectBuilder interface {

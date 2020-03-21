@@ -1,8 +1,8 @@
 package builder
 
 import (
-	"t-storage/builder"
-	"t-storage/core/condition"
+	"github.com/tsyrul-alexander/go-query-builder/builder"
+	"github.com/tsyrul-alexander/go-query-builder/core/condition"
 )
 
 type ConditionBuilder struct {

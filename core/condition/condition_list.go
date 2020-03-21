@@ -1,8 +1,8 @@
 package condition
 
 import (
-	"t-storage/core/column"
-	"t-storage/core/parameter"
+	"github.com/tsyrul-alexander/go-query-builder/core/column"
+	"github.com/tsyrul-alexander/go-query-builder/core/parameter"
 )
 
 type ConditionList []QueryCondition

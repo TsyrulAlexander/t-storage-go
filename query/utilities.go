@@ -1,9 +1,9 @@
 package query
 
 import (
-	"t-storage/core/column"
-	"t-storage/core/condition"
-	"t-storage/core/join"
+	"github.com/tsyrul-alexander/go-query-builder/core/column"
+	"github.com/tsyrul-alexander/go-query-builder/core/condition"
+	"github.com/tsyrul-alexander/go-query-builder/core/join"
 )
 
 func (s *Select)AddTableColumn(tableName string, columnName string) *column.TableColumn {

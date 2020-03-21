@@ -1,7 +1,7 @@
 package condition
 
 import (
-	"t-storage/core/parameter"
+	"github.com/tsyrul-alexander/go-query-builder/core/parameter"
 )
 type ParameterQueryCondition struct {
 	Value *parameter.QueryParameter

@@ -1,6 +1,6 @@
 package builder
 
-import "t-storage/core/condition"
+import "github.com/tsyrul-alexander/go-query-builder/core/condition"
 
 type ConditionBuilder interface {
 	GetQueryConditionSql(c *condition.QueryCondition) string

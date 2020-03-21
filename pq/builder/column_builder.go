@@ -1,7 +1,7 @@
 package builder
 
 import (
-	"t-storage/core/column"
+	"github.com/tsyrul-alexander/go-query-builder/core/column"
 )
 
 type ColumnBuilder struct {}

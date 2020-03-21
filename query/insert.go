@@ -2,9 +2,9 @@ package query
 
 import (
 	"database/sql"
-	"t-storage/builder"
-	"t-storage/core/column"
-	"t-storage/core/parameter"
+	"github.com/tsyrul-alexander/go-query-builder/builder"
+	"github.com/tsyrul-alexander/go-query-builder/core/column"
+	"github.com/tsyrul-alexander/go-query-builder/core/parameter"
 )
 
 type Insert struct {

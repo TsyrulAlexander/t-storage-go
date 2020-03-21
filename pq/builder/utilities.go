@@ -1,10 +1,10 @@
 package builder
 
 import (
-	"t-storage/core/column"
-	"t-storage/core/condition"
-	"t-storage/core/join"
-	"t-storage/query"
+	"github.com/tsyrul-alexander/go-query-builder/core/column"
+	"github.com/tsyrul-alexander/go-query-builder/core/condition"
+	"github.com/tsyrul-alexander/go-query-builder/core/join"
+	"github.com/tsyrul-alexander/go-query-builder/query"
 )
 
 const defaultSelectRowCount = 10
