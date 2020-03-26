@@ -12,9 +12,9 @@ const (
 	spaceStr = " "
 )
 type SelectBuilder struct {
-	ColumnBuilder
-	JoinBuilder
-	ConditionBuilder
+	*ColumnBuilder
+	*JoinBuilder
+	*ConditionBuilder
 }
 func (b *SelectBuilder) AlterBuildSql(_ *query.Select, _ *strings.Builder) {
 

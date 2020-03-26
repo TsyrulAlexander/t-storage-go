@@ -68,6 +68,8 @@ func (b *ConditionBuilder) getComparisonTypeSql(c condition.ComparisonType, left
 		return leftExpression + " = " + rightExpression
 	case condition.ComparisonTypeNotEqual:
 		return leftExpression + " != " + rightExpression
+	case condition.ComparisonTypeIn:
+		return leftExpression + " IN (" + rightExpression + ")"
 	default:
 		panic("not implemented")
 	}

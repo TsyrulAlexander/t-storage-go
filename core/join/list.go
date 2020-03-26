@@ -5,9 +5,9 @@ import (
 	"github.com/tsyrul-alexander/go-query-builder/core/condition"
 )
 
-type JoinList []TableJoin
+type List []TableJoin
 
-func (j *JoinList) CreateLeftJoin(joinTableName string, joinTableColumnName string, mainTableName string, mainTableColumnName string) *TableJoin {
+func (j *List) CreateLeftJoin(joinTableName string, joinTableColumnName string, mainTableName string, mainTableColumnName string) *TableJoin {
 	return &TableJoin{
 		JoinTableName: joinTableName,
 		Type:          LeftJoin,

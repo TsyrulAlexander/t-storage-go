@@ -10,9 +10,9 @@ import (
 
 type Select struct {
 	TableName  string
-	Columns    *column.ColumnList
-	Joins      *join.JoinList
-	Conditions *condition.ConditionList
+	Columns    *column.List
+	Joins      *join.List
+	Conditions *condition.List
 	RowCount   int
 	Builder    SelectBuilder
 }
@@ -41,7 +41,7 @@ func (s *Select) GetSqlText() string {
 	return sb.String()
 }
 
-func getRows(rs *sql.Rows, columns *column.ColumnList) (*[]Row, error) {
+func getRows(rs *sql.Rows, columns *column.List) (*[]Row, error) {
 	var rows []Row
 	for rs.Next() {
 		var row, err = getRow(rs, columns)
@@ -53,7 +53,7 @@ func getRows(rs *sql.Rows, columns *column.ColumnList) (*[]Row, error) {
 	return &rows, nil
 }
 
-func getRow(rs *sql.Rows, columns *column.ColumnList) (*Row, error) {
+func getRow(rs *sql.Rows, columns *column.List) (*Row, error) {
 	var scanArray, valueArray = getScanRow(len(*columns))
 	if err := rs.Scan(scanArray...); err != nil {
 		return nil, err
@@ -70,7 +70,7 @@ func getScanRow(count int) (scan []interface{}, value []interface{}) {
 	return scanArray, valueArray
 }
 
-func getRowValue(columns *column.ColumnList, valueArray []interface{}) *Row {
+func getRowValue(columns *column.List, valueArray []interface{}) *Row {
 	var r = Row{}
 	for i, c := range *columns {
 		var columnAlias = c.GetAlias()

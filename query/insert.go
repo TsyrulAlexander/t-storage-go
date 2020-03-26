@@ -9,7 +9,7 @@ import (
 
 type Insert struct {
 	TableName string
-	ColumnValues *column.ColumnValueList
+	ColumnValues *column.ValueList
 	Builder builder.InsertBuilder
 }
 

@@ -7,26 +7,29 @@ import (
 	"github.com/tsyrul-alexander/go-query-builder/query"
 )
 
-const defaultSelectRowCount = 10
+const (
+	DefaultSelectRowCount = 10
+	ParameterSeparator = ","
+)
 
 func CreateSelect(tableName string) *query.Select {
-	var columnBuilder = ColumnBuilder{}
-	var parameterBuilder = &ParameterBuilder{}
-	var conditionBuilder = ConditionBuilder{ColumnBuilder:&columnBuilder, ParameterBuilder: parameterBuilder}
-	var joinBuilder = JoinBuilder{ConditionBuilder: &conditionBuilder}
+	var columnBuilder = &ColumnBuilder{}
+	var parameterBuilder = &ParameterBuilder{ParameterSeparator:ParameterSeparator}
+	var conditionBuilder = &ConditionBuilder{ColumnBuilder:columnBuilder, ParameterBuilder: parameterBuilder}
+	var joinBuilder = &JoinBuilder{ConditionBuilder: conditionBuilder}
 	var selectBuilder = &SelectBuilder{ColumnBuilder:columnBuilder, ConditionBuilder: conditionBuilder, JoinBuilder: joinBuilder}
 	return &query.Select{
 		TableName:  tableName,
 		Builder:    selectBuilder,
-		Columns:    &column.ColumnList{},
-		Joins:      &join.JoinList{},
-		Conditions: &condition.ConditionList{},
-		RowCount:   defaultSelectRowCount,
+		Columns:    &column.List{},
+		Joins:      &join.List{},
+		Conditions: &condition.List{},
+		RowCount:   DefaultSelectRowCount,
 	}
 }
 
-func CreateInsert(tableName string, columnValues *column.ColumnValueList) *query.Insert {
-	var parameterBuilder = &ParameterBuilder{}
+func CreateInsert(tableName string, columnValues *column.ValueList) *query.Insert {
+	var parameterBuilder = &ParameterBuilder{ParameterSeparator:ParameterSeparator}
 	var insertBuilder = &InsertBuilder{ParameterBuilder: parameterBuilder}
 	return &query.Insert{
 		TableName: tableName,
