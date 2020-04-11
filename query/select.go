@@ -14,6 +14,7 @@ type Select struct {
 	Joins      *join.List
 	Conditions *condition.List
 	RowCount   int
+	RowOffset  int
 	Builder    SelectBuilder
 }
 

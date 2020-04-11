@@ -21,6 +21,7 @@ func (b *SelectBuilder) AlterBuildSql(_ *query.Select, _ *strings.Builder) {
 }
 func (b *SelectBuilder) BeforeBuildSql(s *query.Select, sb *strings.Builder) {
 	b.SetLimitSql(s, sb)
+	b.SetOffsetSql(s, sb)
 }
 func (b *SelectBuilder) SetSelectSql(s *query.Select, sb *strings.Builder) {
 	sb.WriteString(b.getSelectCommandSql())
@@ -50,10 +51,19 @@ func (b *SelectBuilder) SetWhereSql(s *query.Select, sb *strings.Builder) {
 	sb.WriteString(newLine)
 }
 func (b *SelectBuilder) SetLimitSql(s *query.Select, sb *strings.Builder) {
-	if s.RowCount == 0 {
+	if s.RowCount >= 0 {
 		return
 	}
 	sb.WriteString(b.getLimitCommandSql())
+	sb.WriteString(spaceStr)
+	sb.WriteString(strconv.Itoa(s.RowCount))
+	sb.WriteString(newLine)
+}
+func (b *SelectBuilder) SetOffsetSql(s *query.Select, sb *strings.Builder) {
+	if s.RowOffset >= 0 {
+		return
+	}
+	sb.WriteString(b.getOffsetCommandSql())
 	sb.WriteString(spaceStr)
 	sb.WriteString(strconv.Itoa(s.RowCount))
 	sb.WriteString(newLine)
@@ -91,5 +101,8 @@ func (b *SelectBuilder) getWhereCommandSql() string {
 }
 func (b *SelectBuilder) getLimitCommandSql() string {
 	return "LIMIT"
+}
+func (b *SelectBuilder) getOffsetCommandSql() string {
+	return "OFFSET"
 }
 

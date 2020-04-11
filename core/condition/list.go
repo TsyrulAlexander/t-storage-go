@@ -18,7 +18,7 @@ func (cl *List) CreateColumnValueCondition(comparisonType ComparisonType, c colu
 			QueryColumn: c,
 		},
 		RightCondition: &ParameterQueryCondition{
-			Value: &v,
+			Value: v,
 		},
 	}
 }

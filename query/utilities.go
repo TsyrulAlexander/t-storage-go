@@ -22,12 +22,21 @@ func (s *Select)AddColumnValueCondition(comparisonType condition.ComparisonType,
 	return cond
 }
 
+func (s *Select) AddCondition(condition condition.QueryCondition) condition.QueryCondition {
+	var c = append(*s.Conditions, condition)
+	s.Conditions = &c
+	return condition
+}
+
 func (s *Select) AddConditionGroup(logicalOperation condition.LogicalOperation,
 		conditions ...condition.QueryCondition) *condition.GroupQueryCondition {
-	return &condition.GroupQueryCondition{
+	var cg = &condition.GroupQueryCondition{
 		LogicalOperation:logicalOperation,
 		QueryConditions: conditions[:],
 	}
+	var c = append(*s.Conditions, cg)
+	s.Conditions = &c
+	return cg
 }
 
 func (s *Select) AddLeftJoin(joinTableName string, joinTableColumnName string, mainTableName string, mainTableColumnName string) *join.TableJoin {

@@ -6,8 +6,8 @@ type ParameterBuilder struct {
 	ParameterSeparator string
 }
 
-func (b *ParameterBuilder) GetParameterSql(p *parameter.QueryParameter) string {
-	switch t:= (*p).(type) {
+func (b *ParameterBuilder) GetParameterSql(p parameter.QueryParameter) string {
+	switch t:= p.(type) {
 	case *parameter.StringParameter, *parameter.GuidParameter:
 		return "'" + t.GetValueSql() + "'"
 	case *parameter.IntParameter:
@@ -22,7 +22,7 @@ func (b *ParameterBuilder) GetParameterSql(p *parameter.QueryParameter) string {
 func (b *ParameterBuilder)getArrayParameterSql(p *parameter.ArrayParameter) string {
 	var testSql = ""
 	for _, p := range p.Parameters {
-		testSql += b.GetParameterSql(&p)
+		testSql += b.GetParameterSql(p)
 	}
 	return testSql
 }

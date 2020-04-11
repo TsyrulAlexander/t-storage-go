@@ -30,7 +30,7 @@ func (b *InsertBuilder) getColumnNamesAndValuesSql(columnValues *map[string]para
 	var columnValuesCount = len(*columnValues)
 	for key, value := range *columnValues {
 		columnsSql += b.getColumnNameSql(key)
-		valuesSql += b.getColumnValueSql(&value)
+		valuesSql += b.getColumnValueSql(value)
 		columnValuesCount--
 		if columnValuesCount != 0 {
 			columnsSql += separate
@@ -44,6 +44,6 @@ func (b *InsertBuilder) getColumnNameSql(columnName string) string {
 	return GetColumnNameWithFormat(columnName)
 }
 
-func (b *InsertBuilder) getColumnValueSql(p *parameter.QueryParameter) string {
+func (b *InsertBuilder) getColumnValueSql(p parameter.QueryParameter) string {
 	return b.GetParameterSql(p)
 }
