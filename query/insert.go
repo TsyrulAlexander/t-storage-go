@@ -18,6 +18,11 @@ func (i *Insert) GetSqlText() string {
 	return i.Builder.GetInsertSql(i.TableName, (*map[string]parameter.QueryParameter)(columnValues))
 }
 
+func (i *Insert) ExecuteTx(tx *sql.Tx) (sql.Result, error) {
+	var sqlText = i.GetSqlText()
+	return tx.Exec(sqlText)
+}
+
 func (i *Insert) Execute(db *sql.DB) (sql.Result, error) {
 	var sqlText = i.GetSqlText()
 	return db.Exec(sqlText)

@@ -10,6 +10,6 @@ func (p *IntParameter)GetValueSql() string {
 	return strconv.Itoa(p.Value)
 }
 
-func CreateIntParameter(value int) *IntParameter {
+func CreateIntParameter(value int) QueryParameter {
 	return &IntParameter{Value:value}
 }

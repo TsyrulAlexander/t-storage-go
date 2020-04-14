@@ -7,7 +7,21 @@ import (
 
 type List []TableJoin
 
-func (j *List) CreateLeftJoin(joinTableName string, joinTableColumnName string, mainTableName string, mainTableColumnName string) *TableJoin {
+func (jl *List) CreateLeftJoin(joinTableName string, joinTableColumnName string, mainTableName string, mainTableColumnName string) *TableJoin {
+	return CreateLeftJoin(joinTableName, joinTableColumnName, mainTableName,mainTableColumnName)
+}
+
+func (jl *List) GetIfExistsJoin(j *TableJoin) bool {
+	var alias = j.GetAlias()
+	for _, join := range *jl {
+		if join != *j && join.GetAlias() == alias {
+			return true
+		}
+	}
+	return false;
+}
+
+func CreateLeftJoin(joinTableName string, joinTableColumnName string, mainTableName string, mainTableColumnName string) *TableJoin {
 	return &TableJoin{
 		JoinTableName: joinTableName,
 		Type:          LeftJoin,

@@ -8,8 +8,8 @@ type Row map[string]interface{}
 
 func (r *Row)GetUuidValue(columnName string) uuid.UUID {
 	var value, exist = (*r)[columnName]
-	if !exist {
-		return uuid.UUID{}
+	if !exist || value == nil {
+		return uuid.Nil
 	}
 	var v = value.([]uint8)
 	var guid, _ = uuid.ParseBytes(v)
@@ -18,7 +18,7 @@ func (r *Row)GetUuidValue(columnName string) uuid.UUID {
 
 func (r *Row)GetStringValue(columnName string) string {
 	var value, exist = (*r)[columnName]
-	if !exist {
+	if !exist || value == nil {
 		return ""
 	}
 	return value.(string)
@@ -26,7 +26,7 @@ func (r *Row)GetStringValue(columnName string) string {
 
 func (r *Row)GetIntValue(columnName string) int {
 	var value, exist = (*r)[columnName]
-	if !exist {
+	if !exist || value == nil {
 		return 0
 	}
 	return int(value.(int64))

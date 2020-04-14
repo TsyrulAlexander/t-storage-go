@@ -10,6 +10,9 @@ func (p *GuidParameter)GetValueSql() string {
 	return p.Value.String()
 }
 
-func CreateGuidParameter(value uuid.UUID) *GuidParameter {
+func CreateGuidParameter(value uuid.UUID) QueryParameter {
+	if value == uuid.Nil {
+		return CreateNullParameter()
+	}
 	return &GuidParameter{Value:value}
 }

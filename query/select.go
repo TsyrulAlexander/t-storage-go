@@ -2,10 +2,11 @@ package query
 
 import (
 	"database/sql"
-	"strings"
+	"errors"
 	"github.com/tsyrul-alexander/go-query-builder/core/column"
 	"github.com/tsyrul-alexander/go-query-builder/core/condition"
 	"github.com/tsyrul-alexander/go-query-builder/core/join"
+	"strings"
 )
 
 type Select struct {
@@ -19,6 +20,9 @@ type Select struct {
 }
 
 func (s *Select) Execute(db *sql.DB) (*[]Row, error) {
+	if vErr := s.ValidateSelect(); vErr != nil {
+		return nil, vErr
+	}
 	var sqlText = s.GetSqlText()
 	var sqlRows, err = db.Query(sqlText)
 	if err != nil {
@@ -40,6 +44,21 @@ func (s *Select) GetSqlText() string {
 	s.Builder.SetWhereSql(s, sb)
 	s.Builder.BeforeBuildSql(s, sb)
 	return sb.String()
+}
+
+func (s *Select) ValidateSelect() error {
+	return s.ValidateJoins()
+}
+
+func (s *Select) ValidateJoins() error {
+	if s.Joins != nil {
+		for _, j := range *s.Joins {
+			if 	s.Joins.GetIfExistsJoin(&j) {
+				return errors.New("joining the " + j.GetAlias() + " exists")
+			}
+		}
+	}
+	return nil
 }
 
 func getRows(rs *sql.Rows, columns *column.List) (*[]Row, error) {

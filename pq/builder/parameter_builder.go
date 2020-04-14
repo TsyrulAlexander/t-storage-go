@@ -12,6 +12,8 @@ func (b *ParameterBuilder) GetParameterSql(p parameter.QueryParameter) string {
 		return "'" + t.GetValueSql() + "'"
 	case *parameter.IntParameter:
 		return t.GetValueSql()
+	case *parameter.NullParameter:
+		return "NULL"
 	case *parameter.ArrayParameter:
 		return b.getArrayParameterSql(t)
 	default:
