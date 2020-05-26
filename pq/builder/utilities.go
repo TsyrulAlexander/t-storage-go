@@ -13,8 +13,11 @@ const (
 )
 
 func CreateSelect(tableName string) *query.Select {
-	var columnBuilder = &ColumnBuilder{}
+	var functionBuilder = &FunctionBuilder{}
+	var columnBuilder = &ColumnBuilder{FunctionBuilder: functionBuilder}
 	var parameterBuilder = &ParameterBuilder{ParameterSeparator:ParameterSeparator}
+	functionBuilder.QueryColumnBuilderFunc = columnBuilder.GetQueryColumnSql
+	functionBuilder.QueryParameterBuilderFunc = parameterBuilder.GetParameterSql
 	var conditionBuilder = &ConditionBuilder{ColumnBuilder:columnBuilder, ParameterBuilder: parameterBuilder}
 	var joinBuilder = &JoinBuilder{ConditionBuilder: conditionBuilder}
 	var selectBuilder = &SelectBuilder{ColumnBuilder:columnBuilder, ConditionBuilder: conditionBuilder, JoinBuilder: joinBuilder}

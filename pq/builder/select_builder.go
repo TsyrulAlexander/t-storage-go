@@ -75,7 +75,7 @@ func (b *SelectBuilder) setColumnsSql(s *query.Select, sb *strings.Builder) {
 	var columnSeparator = b.GetColumnSeparatorSql()
 	var columnCount = len(*s.Columns)
 	for i, c := range *s.Columns {
-		sb.WriteString(fmt.Sprintf(b.GetQueryColumnAliasFormat(c.GetAlias()), b.GetQueryColumnSql(&c)))
+		sb.WriteString(fmt.Sprintf(b.GetQueryColumnAliasFormat(c.GetAlias()), b.GetQueryColumnSql(c)))
 		if i != (columnCount - 1) {
 			sb.WriteString(columnSeparator)
 		}

@@ -40,7 +40,7 @@ func (b *ConditionBuilder) getParameterQueryConditionSql(c *condition.ParameterQ
 }
 
 func (b *ConditionBuilder) getColumnQueryConditionSql(c *condition.ColumnQueryCondition) string {
-	return b.ColumnBuilder.GetQueryColumnSql(&c.QueryColumn)
+	return b.ColumnBuilder.GetQueryColumnSql(c.QueryColumn)
 }
 
 func (b *ConditionBuilder) getGroupQueryConditionSql(c *condition.GroupQueryCondition) string {

@@ -28,16 +28,10 @@ func CreateLeftJoin(joinTableName string, joinTableColumnName string, mainTableN
 		Conditions:    &condition.BinaryQueryCondition{
 			ComparisonType: condition.ComparisonTypeEqual,
 			LeftCondition:  &condition.ColumnQueryCondition{
-				QueryColumn: &column.TableColumn{
-					TableName:  joinTableName,
-					ColumnName: joinTableColumnName,
-				},
+				QueryColumn: column.CreateTableColumn(joinTableName, joinTableColumnName),
 			},
 			RightCondition: &condition.ColumnQueryCondition{
-				QueryColumn: &column.TableColumn{
-					TableName:  mainTableName,
-					ColumnName: mainTableColumnName,
-				},
+				QueryColumn: column.CreateTableColumn(mainTableName, mainTableColumnName),
 			},
 		},
 	}
