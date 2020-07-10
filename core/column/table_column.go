@@ -7,7 +7,7 @@ type TableColumn struct {
 }
 
 func CreateTableColumn(tableColumn string, columnName string) *TableColumn {
-
+	return &TableColumn{TableName:tableColumn, ColumnName:columnName}
 }
 
 func (tc *TableColumn) GetAlias() string {
